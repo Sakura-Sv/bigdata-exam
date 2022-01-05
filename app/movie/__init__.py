@@ -8,4 +8,4 @@ movie_api = Api(movie)
 
 movie_api.add_resource(MovieInfoApi, "/info")
 movie_api.add_resource(MovieListApi, "/list")
-# movie_api.add_resource(MovieStar, "/star")
+movie_api.add_resource(MovieStar, "/star")

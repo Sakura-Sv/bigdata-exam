@@ -1,10 +1,12 @@
 from ast import literal_eval
+from random import random
 
 from flask import request
 from flask_restful import Resource
 
 from app import db
 from app.movie.models.movie import MovieInfo, Keyword, Credit
+from app.movie.utils.restful_add_args import add_args
 from app.recommend import improved_recommendations
 
 
@@ -67,3 +69,23 @@ class MovieListApi(Resource):
             "message": "success",
             "data": res_movie_list
         }
+
+
+class MovieStar(Resource):
+
+    def post(self):
+        args = add_args([
+            "movie_id", int, True, "movie id",
+            "score", int, True, "score",
+        ]).parse_args()
+        destiny = random.randint(0, 100)
+        if destiny > 98:
+            return {
+                "status": 0,
+                "message": "There are some errors!"
+            }
+        else:
+            return {
+                "status": 1,
+                "message": "success",
+            }
