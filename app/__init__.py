@@ -17,6 +17,7 @@ def create_app(config_name):
     cfg.init_app(app)
     logging_conf(app)
     db.init_app(app)
+    return app
 
 
 def logging_conf(app):
