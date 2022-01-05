@@ -21,6 +21,8 @@ def create_app(config_name):
 
     from .movie import movie as movie_blueprint
     app.register_blueprint(movie_blueprint, url_prefix='/api/movie')
+    from .search import search as search_blueprint
+    app.register_blueprint(search_blueprint, url_prefix='/api/search')
 
     @app.before_request
     def before():
