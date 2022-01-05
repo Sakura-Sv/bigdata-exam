@@ -24,6 +24,9 @@ def create_app(config_name):
     from .search import search as search_blueprint
     app.register_blueprint(search_blueprint, url_prefix='/api/search')
 
+    from .recommend import recommand as recommand_blueprint
+    app.register_blueprint(recommand_blueprint, url_prefix='/api/recommand')
+
     @app.before_request
     def before():
         g.__setattr__("start_time", time.time())
