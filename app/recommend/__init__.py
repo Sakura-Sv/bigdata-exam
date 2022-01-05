@@ -1,14 +1,21 @@
-
+import os
 import warnings
 
-from flask import Blueprint
+from flask import Blueprint, current_app
 from flask_restful import Api
 from joblib import load
 
+import config
+
+env = os.getenv("FLASK_CONFIG", "development")
+DEV_MODEL_DIR = "E:/projects/python/bigdata-exam/static/model/"
+PROD_MODEL_DIR = "/var/www/bigdata-exam/model/"
+
 warnings.filterwarnings("ignore")
-cosine_sim = load("E:/projects/python/bigdata-exam/static/model/recom-cos.pkl")
-indices = load("E:/projects/python/bigdata-exam/static/model/recom-ind.pkl")
-smd = load("E:/projects/python/bigdata-exam/static/model/recom-smd.pkl")
+base_path = DEV_MODEL_DIR if env == "development" else PROD_MODEL_DIR
+cosine_sim = load(base_path + "recom-cos.pkl")
+indices = load(base_path + "recom-ind.pkl")
+smd = load(base_path + "recom-smd.pkl")
 m = 5.244896612406511
 C = 576.6399999999994
 

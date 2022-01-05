@@ -26,12 +26,14 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('PYMYSQL_DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    MODEL_DIR = "E:/projects/python/bigdata-exam/static/model/"
 
 
 class ProductionConfig(Config):
     """Production config."""
     SQLALCHEMY_DATABASE_URI = os.environ.get('PYMYSQL_DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    MODEL_DIR = "/var/www/bigdata-exam/model/"
 
 
 config = {
