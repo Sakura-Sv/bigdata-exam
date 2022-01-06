@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Api
 
-from app.movie.resources.movie import MovieInfoApi, MovieListApi
+from app.movie.resources.movie import MovieInfoApi, MovieListApi, MovieStar
 
 movie = Blueprint('movie', __name__)
 movie_api = Api(movie)

@@ -2,7 +2,7 @@ import os
 
 from app import create_app, db
 
-app = create_app(os.getenv("FLASK_CONFIG", "development"))
+app = create_app(os.getenv("FLASK_CONFIG", "production"))
 
 
 @app.shell_context_processor

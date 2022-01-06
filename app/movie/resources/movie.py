@@ -6,7 +6,7 @@ from flask_restful import Resource
 
 from app import db
 from app.movie.models.movie import MovieInfo, Keyword, Credit
-from app.movie.utils.restful_add_args import add_args
+from app.utils.restful_add_args import add_args
 from app.recommend import improved_recommendations
 
 
@@ -23,27 +23,29 @@ class MovieInfoApi(Resource):
             credits = db.session.query(Credit).filter(Credit.movie_id.__eq__(movie.id)).first()
             data["keywords"] = keywords.to_json() if keywords is not None else keywords
             data["credits"] = credits.to_json() if credits is not None else credits
-
-            recommend_ids = improved_recommendations(movie.title)
-            recommend_rows = db.session.execute("SELECT * FROM movies_metadata WHERE id in :IDS",
-                                                {"IDS": recommend_ids}).all()
-            recommend_list = []
-            for row in recommend_rows:
-                genres = []
-                for item in literal_eval(row["genres"]):
-                    genres.append(item["name"])
-                movie = {
-                    "genres": genres,
-                    "id": row["id"],
-                    "imdb_id": row["imdb_id"],
-                    "overview": row["overview"],
-                    "poster_path": "https://image.tmdb.org/t/p/original" + row["poster_path"],
-                    "title": row["title"],
-                    "vote_average": row["vote_average"],
-                    "vote_count": row["vote_count"],
-                }
-                recommend_list.append(movie)
-            data["recommand_list"] = recommend_list
+            try:
+                recommend_ids = improved_recommendations(movie.title)
+                recommend_rows = db.session.execute("SELECT * FROM movies_metadata WHERE id in :IDS",
+                                                    {"IDS": recommend_ids}).all()
+                recommend_list = []
+                for row in recommend_rows:
+                    genres = []
+                    for item in literal_eval(row["genres"]):
+                        genres.append(item["name"])
+                    movie = {
+                        "genres": genres,
+                        "id": row["id"],
+                        "imdb_id": row["imdb_id"],
+                        "overview": row["overview"],
+                        "poster_path": "https://image.tmdb.org/t/p/original" + row["poster_path"],
+                        "title": row["title"],
+                        "vote_average": row["vote_average"],
+                        "vote_count": row["vote_count"],
+                    }
+                    recommend_list.append(movie)
+                data["recommand_list"] = recommend_list
+            except Exception as e:
+                data["recommand_list"] = []
             return {
                 "status": 1,
                 "message": "success",

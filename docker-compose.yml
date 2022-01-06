@@ -1,0 +1,33 @@
+version: '3'
+services:
+  app:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /var/www/bigdata-exam/model:/var/www/bigdata-exam/model
+    ports:
+      - "8088:80"
+    networks:
+      - back
+  mysql:
+    container_name: mysql
+    image: mysql/mysql-server:8.0.18
+    environment:
+      MYSQL_DATABASE: movie_recom
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - /conf/mysql:/etc/mysql/conf.d
+      - /var/www/bigdata-exam/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    networks:
+      - back
+
+networks:
+  back:
+      driver: host
